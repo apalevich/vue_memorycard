@@ -16,7 +16,12 @@
         <div class="row vh-100">
             <div class="col-md-6 col-lg-6 col-xl-5 m-auto">
                  <div class="row justify-content-md-center">
-                    <div v-for="card in cards" class="col-auto mb-3 flip-container">
+                    <div
+                        class="col-auto flip-container m-3 p-0"
+                        v-for="card in cards"
+                        :class="{ 'flipped': card.isFlipped }"
+                        @click="flipCard(card)"
+                    >
                         <div class="memorycard">
                             <div class="front border rounded shadow">
                                 <img width="100" height="150" src="/img/pattern.jpg">

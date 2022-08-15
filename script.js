@@ -27,6 +27,16 @@ let app = new Vue({
                 img: 'watermelon.jpg',
             },
         ]
+    },
+    created() {
+        this.cards.forEach(card => {
+            Vue.set(card, 'isFlipped', false)
+        })
+    },
+    methods: {
+        flipCard(card) {
+            card.isFlipped = !card.isFlipped;
+        }
     }
 });
 
