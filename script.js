@@ -28,10 +28,12 @@ let app = new Vue({
             },
         ],
         memoryCards: [],
+        flippedCards: [],
     },
     created() {
         this.cards.forEach(card => {
             Vue.set(card, 'isFlipped', false)
+            Vue.set(card, 'isMatched', false);
         });
 
         this.memoryCards = this.double(this.cards);
@@ -39,15 +41,34 @@ let app = new Vue({
     },
     methods: {
         flipCard(card) {
-            card.isFlipped = !card.isFlipped;
+            card.isFlipped = true;
+
+            if (this.flippedCards.length < 2) {
+                this.flippedCards = [...this.flippedCards, card];
+            };
+            console.log(this.flippedCards);
+            if (this.flippedCards.length === 2) {
+                this.match(card);
+            };
+        },
+        match(card) {
+            if(this.flippedCards[0].name === this.flippedCards[1].name) {
+                setTimeout(() => {
+                    this.flippedCards = this.flippedCards.map(card => card.isMatched = true);
+                    this.flippedCards = [];
+                }, 400);
+            } else {
+                setTimeout(() => {
+                    this.flippedCards = this.flippedCards.map(card => card.isFlipped = false);
+                    this.flippedCards = [];
+                }, 800);
+            }
         },
         double(cards) {
             return [...cards, ..._.cloneDeep(cards)]
         },
         shuffle(cards) {
             return [..._.shuffle(cards)];
-        }
+        },
     },
 });
-
-console.log(app);

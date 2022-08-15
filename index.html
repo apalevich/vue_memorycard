@@ -17,7 +17,10 @@
                     <div
                         class="col-auto flip-container m-3 p-0"
                         v-for="card in memoryCards"
-                        :class="{ 'flipped': card.isFlipped }"
+                        :class="{
+                                    'flipped': card.isFlipped,
+                                    'matched': card.isMatched
+                                }"
                         @click="flipCard(card)"
                     >
                         <div class="memorycard">
