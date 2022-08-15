@@ -34,13 +34,18 @@ let app = new Vue({
             Vue.set(card, 'isFlipped', false)
         });
 
-        this.memoryCards = this.cards.concat(_.cloneDeep(this.cards));
-        this.memoryCards = _.shuffle(this.memoryCards);
-        console.log(this.memoryCards);
+        this.memoryCards = this.double(this.cards);
+        this.memoryCards = this.shuffle(this.memoryCards);
     },
     methods: {
         flipCard(card) {
             card.isFlipped = !card.isFlipped;
+        },
+        double(cards) {
+            return [...cards, ..._.cloneDeep(cards)]
+        },
+        shuffle(cards) {
+            return [..._.shuffle(cards)];
         }
     },
 });
