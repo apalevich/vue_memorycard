@@ -26,18 +26,23 @@ let app = new Vue({
                 name: 'Watermelon',
                 img: 'watermelon.jpg',
             },
-        ]
+        ],
+        memoryCards: [],
     },
     created() {
         this.cards.forEach(card => {
             Vue.set(card, 'isFlipped', false)
-        })
+        });
+
+        this.memoryCards = this.cards.concat(_.cloneDeep(this.cards));
+        this.memoryCards = _.shuffle(this.memoryCards);
+        console.log(this.memoryCards);
     },
     methods: {
         flipCard(card) {
             card.isFlipped = !card.isFlipped;
         }
-    }
+    },
 });
 
 console.log(app);
