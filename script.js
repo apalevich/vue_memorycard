@@ -29,6 +29,7 @@ let app = new Vue({
         ],
         memoryCards: [],
         flippedCards: [],
+        finished: false,
     },
     created() {
         this.cards.forEach(card => {
@@ -56,12 +57,17 @@ let app = new Vue({
                 setTimeout(() => {
                     this.flippedCards = this.flippedCards.map(card => card.isMatched = true);
                     this.flippedCards = [];
-                }, 400);
+
+                    // All cards matched?
+                    if (this.memoryCards.every(card => card.isMatched === true)) {
+                        this.finished = true;
+                    }
+                }, 200);
             } else {
                 setTimeout(() => {
                     this.flippedCards = this.flippedCards.map(card => card.isFlipped = false);
                     this.flippedCards = [];
-                }, 800);
+                }, 400);
             }
         },
         double(cards) {
