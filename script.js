@@ -38,13 +38,7 @@ let app = new Vue({
         }
     },
     created() {
-        this.cards.forEach(card => {
-            Vue.set(card, 'isFlipped', false)
-            Vue.set(card, 'isMatched', false);
-        });
-
-        this.memoryCards = this.double(this.cards);
-        this.memoryCards = this.shuffle(this.memoryCards);
+        this.reset();
     },
     methods: {
         flipCard(card) {
@@ -99,6 +93,25 @@ let app = new Vue({
 
             this.totalTime.minutes++;
             this.totalTime.seconds = 0;
+        },
+        reset() {
+            clearInterval(this.inverval);
+            this.cards.forEach((card) => {
+                Vue.set(card, 'isFlipped', false);
+                Vue.set(card, 'isMatched', false);
+            });
+
+            setTimeout(() => {
+                this.memoryCards = [];
+                this.memoryCards = this.double(this.cards);
+                this.memoryCards = this.shuffle(this.memoryCards);
+                this.totalTime.minutes = 0;
+                this.totalTime.seconds = 0;
+                this.started = false;
+                this.finished = false;
+                this.turns = 0;
+                this.flippedCards = [];
+            }, 400);
         }
     },
     computed: {
