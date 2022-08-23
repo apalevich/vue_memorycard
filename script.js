@@ -29,7 +29,13 @@ let app = new Vue({
         ],
         memoryCards: [],
         flippedCards: [],
+        started: false,
         finished: false,
+        turns: 0,
+        totalTime: {
+            minutes: 0,
+            seconds: 0
+        }
     },
     created() {
         this.cards.forEach(card => {
@@ -47,12 +53,15 @@ let app = new Vue({
             if (this.flippedCards.length < 2) {
                 this.flippedCards = [...this.flippedCards, card];
             };
-            console.log(this.flippedCards);
             if (this.flippedCards.length === 2) {
                 this.match(card);
             };
+            if(!this.started) {
+                this.startGame();
+            }
         },
         match(card) {
+            this.turns++;
             if(this.flippedCards[0].name === this.flippedCards[1].name) {
                 setTimeout(() => {
                     this.flippedCards = this.flippedCards.map(card => card.isMatched = true);
@@ -60,6 +69,7 @@ let app = new Vue({
 
                     // All cards matched?
                     if (this.memoryCards.every(card => card.isMatched === true)) {
+                        clearInterval(this.inverval);
                         this.finished = true;
                     }
                 }, 200);
@@ -76,5 +86,33 @@ let app = new Vue({
         shuffle(cards) {
             return [..._.shuffle(cards)];
         },
+        startGame() {
+            this.tick();
+            this.inverval = setInterval(this.tick, 1000);
+            this.started = true;
+        },
+        tick() {
+            if (this.totalTime.seconds !== 59) {
+                this.totalTime.seconds++;
+                return;
+            }
+
+            this.totalTime.minutes++;
+            this.totalTime.seconds = 0;
+        }
     },
+    computed: {
+        sec() {
+            if (this.totalTime.seconds < 10) {
+                return '0' + this.totalTime.seconds;
+            }
+            return this.totalTime.seconds;
+        },
+        min() {
+            if (this.totalTime.minutes < 10) {
+                return '0' + this.totalTime.minutes;
+            }
+            return this.totalTime.minutes;
+        }
+    }
 });
